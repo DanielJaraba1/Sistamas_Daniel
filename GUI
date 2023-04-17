@@ -1,0 +1,113 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class Calculadora extends JFrame implements ActionListener {
+    private JTextField campoTexto;
+    private JButton botonSuma, botonResta, botonMultiplica, botonDivide, botonIgual, botonBorrar;
+    private JPanel panelNumeros, panelOperaciones;
+    private double numero1 = 0, numero2 = 0, resultado = 0;
+    private String operacion = "";
+
+    public Calculadora() {
+        // Configurar la ventana
+        super("Calculadora");
+     
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Crear el campo de texto para mostrar los números y resultados
+        campoTexto = new JTextField(35);
+        campoTexto.setEditable(false);
+
+        // Crear los botones para los números
+        panelNumeros = new JPanel();
+        panelNumeros.setLayout(new GridLayout(4, 5));
+        for (int i = 1; i <= 9; i++) {
+            JButton botonNumero = new JButton(Integer.toString(i));
+            botonNumero.addActionListener(this);
+            panelNumeros.add(botonNumero);
+        }
+        JButton botonCero = new JButton("0");
+        botonCero.addActionListener(this);
+        panelNumeros.add(botonCero);
+
+        // Crear los botones para las operaciones
+        panelOperaciones = new JPanel();
+        panelOperaciones.setLayout(new GridLayout(5, 1));
+        botonSuma = new JButton("+");
+        botonSuma.addActionListener(this);
+        panelOperaciones.add(botonSuma);
+        botonResta = new JButton("-");
+        botonResta.addActionListener(this);
+        panelOperaciones.add(botonResta);
+        botonMultiplica = new JButton("*");
+        botonMultiplica.addActionListener(this);
+        panelOperaciones.add(botonMultiplica);
+        botonDivide = new JButton("/");
+        botonDivide.addActionListener(this);
+        panelOperaciones.add(botonDivide);
+        botonIgual = new JButton("=");
+        botonIgual.addActionListener(this);
+        panelOperaciones.add(botonIgual);
+        botonBorrar = new JButton("C");
+        botonBorrar.addActionListener(this);
+        panelOperaciones.add(botonBorrar);
+
+        // Agregar los componentes a la ventana
+        JPanel panelPrincipal = new JPanel();
+        panelPrincipal.setLayout(new BorderLayout());
+        panelPrincipal.add(campoTexto, BorderLayout.NORTH);
+        panelPrincipal.add(panelNumeros, BorderLayout.CENTER);
+        panelPrincipal.add(panelOperaciones, BorderLayout.EAST);
+
+        add(panelPrincipal);
+        panelPrincipal.setSize(500,400);
+
+        // Mostrar la ventana
+     
+        pack();
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        String comando = e.getActionCommand();
+        if (comando.charAt(0) >= '0' && comando.charAt(0) <= '9' || comando.equals(".")) {
+            campoTexto.setText(campoTexto.getText() + comando);
+        } else if (comando.equals("+")) {
+            numero1 = Double.parseDouble(campoTexto.getText());
+            operacion = "+";
+            campoTexto.setText("");
+        } else if (comando.equals("-")) {
+            numero1 = Double.parseDouble(campoTexto.getText());
+            operacion = "-";
+            campoTexto.setText("");
+        } else if (comando.equals("*")) {
+            numero1 = Double.parseDouble(campoTexto.getText());
+            operacion = "*";
+            campoTexto.setText("");
+        } else if (comando.equals("/")) {
+            numero1 = Double.parseDouble(campoTexto.getText());
+            operacion = "/";
+            campoTexto.setText("");
+        } else if (comando.equals("=")) {
+            numero2 = Double.parseDouble(campoTexto.getText());
+            if (operacion.equals("+")) {
+            	resultado = numero1 + numero2;
+            	} else if (operacion.equals("-")) {
+            	resultado = numero1 - numero2;
+            	} else if (operacion.equals("*")) {
+            	resultado = numero1 * numero2;
+            	} else if (operacion.equals("/")) {
+            	resultado = numero1 / numero2;
+            	}
+            	campoTexto.setText(Double.toString(resultado));
+            	numero1 = resultado;
+            	} else if (comando.equals("C")) {
+            	campoTexto.setText("");
+            	}
+    }
+    
+    public static void main(String[] args) {
+        Calculadora calculadora = new Calculadora();
+    }
+}
